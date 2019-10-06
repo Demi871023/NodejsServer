@@ -2,11 +2,12 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
 var logger = require('morgan');
-
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-
+var JsonParser = bodyParser.json();
 
 var app = express();
 
@@ -32,7 +33,10 @@ class RankingAdapter{
 
 class UserAdapter{
   static middleware(req, res, next) {
-    res.send('User!!!');
+    console.log(req.body.name);
+    console.log(req.body.test);
+    res.send(req.body.name);
+
   }
 }
 
@@ -45,13 +49,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(bodyParser.json());
 
 // Routers
 app.all('/', indexRouter);
 app.all('/users', usersRouter);
 app.get('/play', PlayerAdapter.middleware);
-app.get('/user', UserAdapter.middleware);
+app.post('/user', JsonParser,  UserAdapter.middleware);
 app.get('/ranking', RankingAdapter.middleware);
 
 // catch 404 and forward to error handler
