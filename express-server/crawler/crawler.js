@@ -107,7 +107,7 @@ const melon = function () {
             //console.log(song_name);
         // 建立物件並(push)存入結果
         result.push(Object.assign({ song_name, singer }));
-      }
+        }
       // 在終端機(console)列出結果
       console.log(result);
       //寫入 result.json 檔案
@@ -116,38 +116,43 @@ const melon = function () {
 };
 
 const QQmusic = function(){
+    
     request({
-        url: "https://y.qq.com/n/yqq/toplist/4.html",
-        method: "GET"
+        url: "https://i.y.qq.com/n2/m/share/details/toplist.html?ADTAG=newyqq.toplist&type=0&id=4",
+        method: "GET",
+        headers: {
+            "User-Agent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Mobile Safari/537.36"
+        }
     }, function(error, response, body) {
-        if(error || !body) {
+        if(error) {
             return;
         }
 
         const $ = cheerio.load(body);
         const result = [];
-        const table1 = $(".js_song");
-
-        console.log($.text());
-        console.log(table1.text());
-
-        console.log(table1.eq(0).attr('title'));
-
-        for(let i = 0; i < table1.length; i++) {
+        const table1 = $('h3 span.song_list__txt');
+        const table2 = $('p.song_list__desc')
+        
+        for(let i = 0 ; i < table1.length ; i++){
             const song_name = table1.eq(i).text();
-			
-            console.log(song_name);
+            const singer = table2.eq(i).text();
+
+            result.push(Object.assign({ song_name, singer }));
         }
 
+        console.log(result)
 
     });
+
+
 };
 
 
-	spotify();
-	kkbox();
-	billboard();
-	melon();
+spotify();
+kkbox();
+billboard();
+melon();
+QQmusic();
 
 
 // 每半小時爬一次資料
