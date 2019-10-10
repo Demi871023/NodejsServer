@@ -7,6 +7,7 @@ var logger = require('morgan');
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var crawler = require('./crawler/crawler.js');
 var JsonParser = bodyParser.json();
 
 var app = express();
@@ -19,12 +20,14 @@ class PlayerAdapter{
 
 class RankingAdapter{
   static middleware(req, res, next) {
+    crawler;
     res.send('Ranking!!!');
   }
 
   static displayRanking(req, res, next){
     // 1. 從資料庫抓各大排行榜
     //connecting_string = ('localhost:3306', 'root', '', )
+    
     // 2. Ranking Algorithm
     
     // 3. Send Request to app
