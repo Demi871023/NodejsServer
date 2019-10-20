@@ -255,7 +255,6 @@ const QQmusic = function(){
     });
 };
 
-
     spotify();
     kkbox();
     billboard();
@@ -266,7 +265,6 @@ const QQmusic = function(){
     kkbox_Western();
     kkbox_Korean();
     genie();
-
 
 // 每半小時爬一次資料
 //setInterval(kkbox, 30 * 60 * 1000);
